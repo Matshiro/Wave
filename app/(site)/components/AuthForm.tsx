@@ -49,6 +49,7 @@ function AuthForm() {
     if (variant === "REGISTER") {
       axios
         .post("/api/register", data)
+        .then(() => signIn("credentials", data))
         .catch(() => toast.error("Coś poszło nie tak"))
         .finally(() => setIsLoading(false));
     }
@@ -57,6 +58,9 @@ function AuthForm() {
         .then((callback) => {
           if (callback?.error) {
             toast.error("Niewłaściwe dane");
+          }
+          if (callback?.ok && !callback?.error) {
+            router.push("/users");
           }
         })
         .finally(() => setIsLoading(false));
