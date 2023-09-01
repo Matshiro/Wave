@@ -19,9 +19,11 @@ function Header({ conversation }: HeaderProps) {
     if (conversation.isGroup) {
       return `${conversation.users.length} members`;
     }
-
-    return "Aktywna";
-  }, [conversation]);
+    if (otherUser.gender === "Female") {
+      return "Aktywna";
+    }
+    return "Aktywny";
+  }, [conversation, otherUser]);
 
   return (
     <div className="bg-white w-full flex border-b-[1px] sm:px-4 py-3 px-4 lg:px-6 justify-between items-center shadow-sm">
@@ -33,8 +35,14 @@ function Header({ conversation }: HeaderProps) {
         >
           <HiChevronLeft size={32} />
         </Link>
-        {/* Pc */}
+        {/* Pc + Mobile */}
         <Avatar user={otherUser} />
+        <div className="flex flex-col">
+          <div>{conversation.name || otherUser.name}</div>
+          <div className="text-sm font-light text-neutral-500">
+            {statusText}
+          </div>
+        </div>
       </div>
     </div>
   );

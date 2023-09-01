@@ -9,6 +9,7 @@ import { BsGithub, BsGoogle } from "react-icons/bs";
 import { toast } from "react-hot-toast";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import List from "@/app/components/inputs/List";
 
 function AuthForm() {
   type Variant = "LOGIN" | "REGISTER";
@@ -104,6 +105,14 @@ function AuthForm() {
             register={register}
             errors={errors}
           />
+          {variant === "REGISTER" && (
+            <List
+              label="Płeć"
+              id="gender"
+              register={register}
+              errors={errors}
+            />
+          )}
           <div>
             <Button disabled={isLoading} fullWidth type="submit">
               {variant === "LOGIN" ? "Zaloguj się" : "Zarejestruj się"}

@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, name, password } = body;
+    const { email, name, password, gender } = body;
 
-    if (!email || !name || !password) {
+    if (!email || !name || !password || !gender) {
       return new NextResponse("Brakujące dane", { status: 400 });
     }
 
@@ -18,9 +18,9 @@ export async function POST(request: Request) {
         email,
         name,
         hashedPassword,
+        gender,
       },
     });
-
     return NextResponse.json(user);
   } catch (error: any) {
     console.log(error, "REGISTRATION ERROR");
