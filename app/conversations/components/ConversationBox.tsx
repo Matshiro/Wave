@@ -3,12 +3,13 @@
 import { useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Conversation, Message, User } from "@prisma/client";
-import { format } from "date-fns";
+import { format, formatDistance } from "date-fns";
 import { useSession } from "next-auth/react";
 import clsx from "clsx";
 import { FullConversationType } from "@/app/types";
 import useOtherUser from "@/app/hooks/useOtherUser";
 import Avatar from "@/app/components/Avatar";
+import pl from "date-fns/locale/pl";
 
 interface ConversationBoxProps {
   data: FullConversationType;
@@ -49,13 +50,16 @@ function ConversationBox({ data, selected }: ConversationBoxProps) {
 
   const lastMessageText = useMemo(() => {
     if (lastMessage?.image) {
-      return "Przesłano obraz";
+      if (otherUser.gender === "Female") {
+        return "Wysłała obraz";
+      }
+      return "Wysłał obraz";
     }
     if (lastMessage?.body) {
       return lastMessage.body;
     }
     return "Rozpoczęto rozmowę";
-  }, [lastMessage]);
+  }, [lastMessage, otherUser]);
 
   return (
     <div
@@ -74,7 +78,9 @@ function ConversationBox({ data, selected }: ConversationBoxProps) {
             </p>
             {lastMessage?.createdAt && (
               <p className="text-xs text-gray-400 font-light">
-                {format(new Date(lastMessage.createdAt), "p")}
+                {formatDistance(new Date(lastMessage.createdAt), new Date(), {
+                  locale: pl,
+                })}
               </p>
             )}
           </div>
